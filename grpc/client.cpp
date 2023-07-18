@@ -1,9 +1,10 @@
-#include <grpc/status.h>
 #include <grpcpp/channel.h>
 #include <grpcpp/client_context.h>
 #include <grpcpp/completion_queue.h>
 #include <grpcpp/create_channel.h>
 #include <grpcpp/security/credentials.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/spdlog.h>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -21,12 +22,13 @@ int main() {
     request.set_name("Lame guy");
     auto response = HelloResponse();
 
-    std::cout << "REQUEST: [" << request.name() << "]\n";
+    SPDLOG_INFO("REQUEST: [{}]", request.name());
 
     // send request
     stub->SayHello(&context, request, &response);
 
-    std::cout << "RESPONSE: [" << response.message() << "]" << std::endl;
+    // std::cout << "RESPONSE: [" << response.message() << "]" << std::endl;
+    SPDLOG_INFO("RESPONSE: [{}]", response.message());
 
     return 0;
 }

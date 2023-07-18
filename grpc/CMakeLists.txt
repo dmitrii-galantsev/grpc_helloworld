@@ -8,7 +8,11 @@ find_program(GRPC_PLUGIN
     NAMES grpc_cpp_plugin
     REQUIRED)
 
-#message("LD_LIBRARY_PATH = $ENV{LD_LIBRARY_PATH}")
+cmake_policy(SET CMP0135 OLD)
+
+# logging and formatting
+include("${PROJECT_SOURCE_DIR}/cmake_modules/spdlog.cmake")
+include("${PROJECT_SOURCE_DIR}/cmake_modules/fmt.cmake")
 
 file(GLOB PROTOB_DEF_SRC_FILES "*.proto")
 set(PROTOB_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
@@ -51,10 +55,14 @@ set(PROTO_SOURCES
 
 # server
 add_executable(server server.cpp ${PROTO_SOURCES})
-target_link_libraries(server gRPC::grpc++)
+target_link_libraries(server
+    PUBLIC gRPC::grpc++
+    PRIVATE spdlog)
 target_include_directories(server PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
 # client
 add_executable(client client.cpp ${PROTO_SOURCES})
-target_link_libraries(client gRPC::grpc++)
+target_link_libraries(client
+    PUBLIC gRPC::grpc++
+    PRIVATE spdlog)
 target_include_directories(client PUBLIC ${CMAKE_CURRENT_BINARY_DIR})

@@ -6,6 +6,7 @@ set(CMAKE_MODULE_PATH
 
 option(CMAKE_VERBOSE_MAKEFILE "Enable verbose output" ON)
 option(CMAKE_EXPORT_COMPILE_COMMANDS "Export compile commands for linters and autocompleters" ON)
+add_compile_definitions(SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_TRACE)
 
 project(main LANGUAGES CXX)
 
@@ -30,26 +31,3 @@ endif()
 include(GNUInstallDirs)
 
 add_subdirectory(grpc)
-add_executable(main main.cpp)
-#target_link_libraries(main functions_lib)
-
-if(BUILD_TESTS)
-    add_subdirectory("tests")
-endif()
-
-### Useful debug stuff
-
-### TODO: DELETE
-# print variables
-include(CMakePrintHelpers)
-cmake_print_variables(CMAKE_CXX_STANDARD)
-# function to print vars
-function(print)
-    message("--")
-    cmake_print_variables(${ARGN})
-endfunction()
-function(print_fatal)
-    print(${ARGN})
-    message(FATAL_ERROR "--- last print")
-endfunction()
-### TODO: DELETE
