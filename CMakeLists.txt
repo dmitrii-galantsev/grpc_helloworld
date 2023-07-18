@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.15)
 
 set(CMAKE_MODULE_PATH
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/"
@@ -12,9 +12,9 @@ project(main LANGUAGES CXX)
 option(BUILD_TESTS "Build test suite" OFF)
 option(ADDRESS_SANITIZER "Enable address sanitizer" OFF)
 
-set(CMAKE_CXX_STANDARD
-    11
-    CACHE STRING "The C++ standard to use")
+#set(CMAKE_CXX_STANDARD
+#    14
+#    CACHE STRING "The C++ standard to use")
 
 ## Add address sanitizer
 if(${ADDRESS_SANITIZER})

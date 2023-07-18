@@ -1,20 +1,13 @@
 
-set(GRPC_ROOT "/opt/grpc" CACHE PATH "GRPC installation directory.")
-
 # find package (preferred!)
 find_package(protobuf
-    HINTS ${GRPC_ROOT}
     CONFIG REQUIRED)
 find_package(gRPC ${GRPC_DESIRED_VERSION}
-    HINTS ${GRPC_ROOT}
     CONFIG REQUIRED)
 find_program(GRPC_PLUGIN
     NAMES grpc_cpp_plugin
-    HINTS ${GRPC_ROOT}
     REQUIRED)
-set(GRPC_LIB_DIR "${GRPC_ROOT}/lib")
 
-#set(ENV{LD_LIBRARY_PATH} ${GRPC_LIB_DIR}:${GRPC_LIB_DIR}64:$ENV{LD_LIBRARY_PATH})
 #message("LD_LIBRARY_PATH = $ENV{LD_LIBRARY_PATH}")
 
 file(GLOB PROTOB_DEF_SRC_FILES "*.proto")
@@ -22,7 +15,6 @@ set(PROTOB_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 set(PROTOB_OUT_DIR "${CMAKE_CURRENT_BINARY_DIR}")
 find_program(PROTOB_CMD
     NAMES protoc
-    HINTS ${GRPC_ROOT}
     REQUIRED)
 
 foreach(file ${PROTOB_DEF_SRC_FILES})
@@ -51,11 +43,18 @@ foreach(file ${PROTOB_DEF_SRC_FILES})
     message("protoc command returned: ${PROTOB_RESULT}")
 endforeach()
 
-# find package (preferred!)
-#find_package(protobuf
-#    HINTS ${GRPC_ROOT}
-#    CONFIG REQUIRED)
-#find_package(gRPC ${GRPC_DESIRED_VERSION}
-#    HINTS ${GRPC_ROOT}
-#    CONFIG REQUIRED)
+set(PROTO_SOURCES
+    helloworld.grpc.pb.h
+    helloworld.grpc.pb.cc
+    helloworld.pb.h
+    helloworld.pb.cc)
 
+# server
+add_executable(server server.cpp ${PROTO_SOURCES})
+target_link_libraries(server gRPC::grpc++)
+target_include_directories(server PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+
+# client
+add_executable(client client.cpp ${PROTO_SOURCES})
+target_link_libraries(client gRPC::grpc++)
+target_include_directories(client PUBLIC ${CMAKE_CURRENT_BINARY_DIR})

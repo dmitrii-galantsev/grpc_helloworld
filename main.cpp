@@ -1,10 +1,9 @@
-#include <iostream>
-#include <array>
 #include <unistd.h>
-#include "functions/functions.hpp"
+#include <array>
+#include <iostream>
 
 int main() {
-    run_functions();
+    std::cout << "Hello, world!\n";
 
     return 0;
 }

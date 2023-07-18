@@ -1,14 +1,16 @@
-# This is a WIP C++ template repository
+# Basic gRPC example
 
-### How to compile
+This program is vaguely based off <https://grpc.io/docs/languages/cpp/basics/>
+
+## How to compile
+
 1. `cmake -B build`
 2. `make -C build -j $(nproc)`
 
-### How to run
-- `./build/main`
+## How to run
 
-### How to test
-- `./build/functions/functions_test`
-or
-- `cd build/functions`
-- `ctest`
+- `./build/grpc/server`
+
+in another terminal run:
+
+- `./build/grpc/client`
