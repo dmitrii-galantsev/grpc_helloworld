@@ -2,13 +2,13 @@
 #include <grpcpp/completion_queue.h>
 #include <grpcpp/server.h>
 #include <grpcpp/server_builder.h>
+#include <spdlog/common.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
 #include <iostream>
 #include <memory>
 #include <string>
 #include "helloworld.grpc.pb.h"
-#include "spdlog/common.h"
 
 class SayHelloImpl final : public Greeter::Service {
  public:
@@ -20,7 +20,7 @@ class SayHelloImpl final : public Greeter::Service {
         const std::string message =
             "Hello " + request->name() + " <" + context->peer() + ">";
         response->set_message(message);
-        SPDLOG_INFO("RESPONSE: [{}]", message);
+        SPDLOG_DEBUG("RESPONSE: [{}]", message);
         return grpc::Status::OK;
     }
 };
@@ -41,7 +41,8 @@ void run_server(int port) {
 }
 
 int main() {
-    SPDLOG_INFO("Server started");
+    spdlog::set_level(spdlog::level::trace);
+    SPDLOG_DEBUG("Server started");
     run_server(51234);
 
     return 0;

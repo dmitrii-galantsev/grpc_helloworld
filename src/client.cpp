@@ -11,7 +11,14 @@
 #include "helloworld.grpc.pb.h"
 #include "helloworld.pb.h"
 
-int main() {
+int main(int argc, char* argv[]) {
+    std::string name;
+    if (argc > 1) {
+        name = argv[1];
+    } else {
+        name = "Cool guy";
+    }
+
     // prepare request
     std::shared_ptr<grpc::Channel> channel;
     channel = grpc::CreateChannel(
@@ -19,15 +26,16 @@ int main() {
     auto stub = Greeter::NewStub(channel);
     grpc::ClientContext context;
     auto request = HelloRequest();
-    request.set_name("Lame guy");
+    request.set_name(name);
     auto response = HelloResponse();
 
     SPDLOG_INFO("REQUEST: [{}]", request.name());
 
     // send request
+    // this is a synchronous call and is blocking
     stub->SayHello(&context, request, &response);
 
-    // std::cout << "RESPONSE: [" << response.message() << "]" << std::endl;
+    // print response
     SPDLOG_INFO("RESPONSE: [{}]", response.message());
 
     return 0;

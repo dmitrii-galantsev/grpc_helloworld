@@ -10,12 +10,11 @@ add_compile_definitions(SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_TRACE)
 
 project(main LANGUAGES CXX)
 
-option(BUILD_TESTS "Build test suite" OFF)
 option(ADDRESS_SANITIZER "Enable address sanitizer" OFF)
 
-#set(CMAKE_CXX_STANDARD
-#    14
-#    CACHE STRING "The C++ standard to use")
+set(CMAKE_CXX_STANDARD
+    17
+    CACHE STRING "The C++ standard to use")
 
 ## Add address sanitizer
 if(${ADDRESS_SANITIZER})
@@ -30,4 +29,4 @@ endif()
 # this must go after project()
 include(GNUInstallDirs)
 
-add_subdirectory(grpc)
+add_subdirectory(src)
